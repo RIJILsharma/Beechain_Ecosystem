@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100 dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>BeeChain - Ecosystem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        hive: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            accent: '#f59e0b',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hex-bg {
+            background-color: #0f172a;
+            background-image: radial-gradient(rgba(217, 119, 6, 0.15) 0.75px, transparent 0.75px), radial-gradient(rgba(217, 119, 6, 0.15) 0.75px, #0f172a 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        /* Complete Light Mode Theme Overrides */
+        html.light {
+            color-scheme: light;
+        }
+        html.light body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        html.light .hex-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(217, 119, 6, 0.15) 0.75px, transparent 0.75px), radial-gradient(rgba(217, 119, 6, 0.15) 0.75px, #f8fafc 0.75px);
+        }
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(12px);
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
+        html.light header {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-color: #e2e8f0 !important;
+        }
+        html.light .bg-slate-950, 
+        html.light .bg-slate-900,
+        html.light .bg-slate-900\/90,
+        html.light .bg-slate-950\/80,
+        html.light .bg-slate-950\/60 {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+        }
+        html.light .bg-slate-800 {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+        html.light .text-slate-100, 
+        html.light .text-slate-200 {
+            color: #0f172a !important;
+        }
+        html.light .text-slate-300, 
+        html.light .text-slate-400 {
+            color: #475569 !important;
+        }
+        html.light .text-slate-500 {
+            color: #64748b !important;
+        }
+        html.light .border-slate-800, 
+        html.light .border-slate-700,
+        html.light .border-slate-900 {
+            border-color: #e2e8f0 !important;
+        }
+        html.light input, 
+        html.light select {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        html.light input::placeholder {
+            color: #94a3b8 !important;
+        }
+        html.light .bg-amber-500\/5,
+        html.light .bg-amber-500\/10 {
+            background-color: rgba(245, 158, 11, 0.1) !important;
+        }
+        html.light .bg-amber-500\/20 {
+            background-color: rgba(245, 158, 11, 0.18) !important;
+        }
+        html.light .text-amber-400 {
+            color: #d97706 !important;
+        }
+        html.light .text-amber-300 {
+            color: #b45309 !important;
+        }
+        html.light .text-emerald-400 {
+            color: #059669 !important;
+        }
+        html.light .text-purple-400 {
+            color: #7c3aed !important;
+        }
+        html.light .text-blue-400 {
+            color: #2563eb !important;
+        }
+        html.light .text-rose-400 {
+            color: #e11d48 !important;
+        }
+        html.light #map-simulator-box {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+        html.light #map-simulator-box svg line,
+        html.light #map-simulator-box svg path {
+            stroke: #cbd5e1 !important;
+        }
+        html.light #qr-code-canvas {
+            background-color: #ffffff !important;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        html.light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+    </style>
+</head>
+<body class="h-full flex flex-col hex-bg overflow-x-hidden">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 bg-slate-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center shadow-lg shadow-amber-500/20 text-slate-950 font-black text-xl">
+                        <i class="fa-solid fa-brands fa-hive"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent">BeeChain</span>
+                        <span class="hidden sm:inline-block text-xs text-slate-400 ml-2 px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700">IoT • AI • Blockchain</span>
+                    </div>
+                </div>
+
+                <!-- Role Switcher Segmented Control -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center space-x-1">
+                        <button id="role-beekeeper-btn" onclick="switchRole('beekeeper')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 bg-amber-500 text-slate-950 shadow-md">
+                            <i class="fa-solid fa-[#1e293b] fa-user-gear"></i>
+                            <span>Beekeeper Portal</span>
+                        </button>
+                        <button id="role-customer-btn" onclick="switchRole('customer')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span>Customer & Tour Portal</span>
+                        </button>
+                    </div>
+
+                    <!-- Light / Dark Mode Toggle Button -->
+                    <button id="theme-toggle-btn" onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/30 transition shadow-md" title="Toggle Light/Dark Theme">
+                        <i id="theme-toggle-icon" class="fa-solid fa-sun text-base"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- BEEKEEPER VIEW CONTAINER -->
+        <div id="view-beekeeper" class="space-y-6">
+            
+            <!-- Quick Metrics Header -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-4 rounded-2xl border border-slate-800 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-amber-500/10 group-hover:text-amber-500/20 transition-all text-6xl">
+                        <i class="fa-solid fa-cubes-stacked"></i>
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Active Hive Sensors</div>
+                    <div class="text-2xl font-bold text-slate-100 mt-1 flex items-baseline justify-between">
+                        <span>24 / 24</span>
+                        <span class="text-xs text-emerald-400 font-normal"><i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Live 100%</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-2">Node Mesh: ESP32 + LoRaWAN</div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-slate-800 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-amber-500/10 group-hover:text-amber-500/20 transition-all text-6xl">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Total Honey Weight</div>
+                    <div class="text-2xl font-bold text-slate-100 mt-1 flex items-baseline justify-between">
+                        <span id="stat-total-weight">482.4 kg</span>
+                        <span class="text-xs text-emerald-400 font-normal"><i class="fa-solid fa-arrow-up"></i> +4.2kg/day</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-2">Avg. 20.1kg / Hive</div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-slate-800 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-amber-500/10 group-hover:text-amber-500/20 transition-all text-6xl">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">AI Yield Forecast (Season)</div>
+                    <div class="text-2xl font-bold text-amber-400 mt-1 flex items-baseline justify-between">
+                        <span id="stat-ai-yield">1,240 kg</span>
+                        <span class="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">High Bloom</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-2">Est. Harvest: Oct 14-18</div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-slate-800 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-amber-500/10 group-hover:text-amber-500/20 transition-all text-6xl">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Blockchain Ledger</div>
+                    <div class="text-2xl font-bold text-slate-100 mt-1 flex items-baseline justify-between">
+                        <span id="stat-blocks-minted">142 Blocks</span>
+                        <span class="text-xs text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">SHA-256 Valid</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-2">Immutable Honey Origin</div>
+                </div>
+            </div>
+
+            <!-- Beekeeper Navigation Tabs -->
+            <div class="flex border-b border-slate-800 space-x-6 text-sm font-medium">
+                <button onclick="switchBkTab('telemetry')" id="bktab-telemetry" class="pb-3 border-b-2 border-amber-500 text-amber-400 font-semibold flex items-center space-x-2">
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <span>IoT Telemetry & Swarm Alerts</span>
+                </button>
+                <button onclick="switchBkTab('yield')" id="bktab-yield" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>AI/ML Yield Predictor & Diagnostics</span>
+                </button>
+                <button onclick="switchBkTab('blockchain')" id="bktab-blockchain" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>Blockchain Batch Provenance & Lab Minting</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: IoT TELEMETRY & SWARM DETECTOR -->
+            <div id="bk-content-telemetry" class="space-y-6">
+                <!-- Hive Selector & Live Controls -->
+                <div class="glass-panel p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <label class="text-xs text-slate-400 font-semibold uppercase">Select Apiary / Hive:</label>
+                        <select id="hive-selector" onchange="updateHiveTelemetry()" class="bg-slate-900 border border-slate-700 text-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-amber-500">
+                            <option value="hive-01">Hive #01 - Solar Apiary (Wildflower Zone A)</option>
+                            <option value="hive-02">Hive #02 - Lavender Meadow (Zone B)</option>
+                            <option value="hive-03" selected>Hive #03 - Acacia Grove (Zone C)</option>
+                            <option value="hive-04">Hive #04 - Forest Edge (Zone D)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <button onclick="triggerSimulatedAlert()" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl text-xs font-semibold flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Simulate Swarm Sound Anomaly</span>
+                        </button>
+                        <button onclick="toggleTelemetryStream()" id="telemetry-stream-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-pause text-amber-400"></i>
+                            <span id="stream-btn-text">Live IoT Polling Active</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- IoT Real-time Telemetry Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Sensor Cards Column -->
+                    <div class="space-y-4">
+                        <!-- Internal Hive Temp -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+                                    <i class="fa-solid fa-temperature-three-quarters"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400">Brood Temp (Internal)</div>
+                                    <div id="val-temp" class="text-2xl font-bold text-slate-100">34.8 °C</div>
+                                    <div class="text-xs text-emerald-400">Optimal Brood Range (34-36°C)</div>
+                                </div>
+                            </div>
+                            <div class="w-16 h-12">
+                                <canvas id="miniChartTemp"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Internal Hive Humidity -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400">Relative Humidity</div>
+                                    <div id="val-humidity" class="text-2xl font-bold text-slate-100">58.2 %</div>
+                                    <div class="text-xs text-emerald-400">Normal Honey Ripening</div>
+                                </div>
+                            </div>
+                            <div class="w-16 h-12">
+                                <canvas id="miniChartHum"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Hive Scale Weight -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+                                    <i class="fa-solid fa-weight-hanging"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400">Hive Scale Load</div>
+                                    <div id="val-weight" class="text-2xl font-bold text-slate-100">22.4 kg</div>
+                                    <div class="text-xs text-emerald-400">+350g nectar gain today</div>
+                                </div>
+                            </div>
+                            <div class="w-16 h-12">
+                                <canvas id="miniChartWeight"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Acoustic Spectrum (Swarming Pitch) -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl">
+                                    <i class="fa-solid fa-wave-square"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400">Acoustic Buzz Frequency</div>
+                                    <div id="val-freq" class="text-2xl font-bold text-slate-100">230 Hz</div>
+                                    <div id="swarm-status-badge" class="text-xs text-emerald-400">Calm Hive Signal</div>
+                                </div>
+                            </div>
+                            <div class="w-16 h-12">
+                                <canvas id="miniChartFreq"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main IoT Telemetry Charts (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Weight & Buzz Frequency Graph -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                        <i class="fa-solid fa-chart-area text-amber-500"></i>
+                                        <span>24-Hour Telemetry & Sound Spectrum Analysis</span>
+                                    </h3>
+                                    <p class="text-xs text-slate-400">Correlates weight gain with bee buzz audio frequencies (Detects queenless state or swarming preparation >280Hz)</p>
+                                </div>
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300">Live 5s Polling</span>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="mainTelemetryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Alert Box / Swarm AI Predictor Notification -->
+                        <div id="swarm-alert-box" class="glass-panel p-4 rounded-2xl border border-amber-500/30 bg-amber-500/5 flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-shield-cat text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-semibold text-amber-300">IoT Acoustic AI Health Monitor</h4>
+                                    <span class="text-[10px] text-slate-400">Edge FFT Analysis</span>
+                                </div>
+                                <p class="text-xs text-slate-300 mt-1" id="swarm-alert-text">Hive acoustic pitch is stable at 230Hz (standard worker bee flight harmonic). Queen presence confirmed via pheromone-sound frequency signature.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: AI/ML HARVEST YIELD PREDICTOR -->
+            <div id="bk-content-yield" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Feature Controls for AI Model -->
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-5">
+                        <div class="border-b border-slate-800 pb-3">
+                            <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                <i class="fa-solid fa-sliders text-amber-500"></i>
+                                <span>AI Yield Model Inputs</span>
+                            </h3>
+                            <p class="text-xs text-slate-400">Adjust weather & forage parameters to re-run Random Forest Yield Forecast ML Model.</p>
+                        </div>
+
+                        <!-- Control 1: Floral Bloom Index -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Nectar Floral Bloom Index</span>
+                                <span id="ml-val-bloom" class="text-amber-400 font-bold">85 % (Acacia Peak)</span>
+                            </div>
+                            <input type="range" id="ml-input-bloom" min="20" max="100" value="85" oninput="updateYieldMLModel()" class="w-full accent-amber-500 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Control 2: Forage Radius Rain Days -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Expected Rainfall Days / Month</span>
+                                <span id="ml-val-rain" class="text-amber-400 font-bold">4 Days</span>
+                            </div>
+                            <input type="range" id="ml-input-rain" min="0" max="20" value="4" oninput="updateYieldMLModel()" class="w-full accent-amber-500 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Control 3: Average Ambient Temp -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Avg Foraging Temp (°C)</span>
+                                <span id="ml-val-temp" class="text-amber-400 font-bold">26 °C</span>
+                            </div>
+                            <input type="range" id="ml-input-temp" min="15" max="38" value="26" oninput="updateYieldMLModel()" class="w-full accent-amber-500 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Control 4: Active Apiary Hives -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Colony Strength Score</span>
+                                <span id="ml-val-colony" class="text-amber-400 font-bold">92 / 100</span>
+                            </div>
+                            <input type="range" id="ml-input-colony" min="40" max="100" value="92" oninput="updateYieldMLModel()" class="w-full accent-amber-500 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- AI Run Button -->
+                        <button onclick="askGeminiBeekeeperAI()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs sm:text-sm shadow-lg shadow-amber-500/20 transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-sparkles"></i>
+                            <span>Generate AI Strategic Agronomist Analysis</span>
+                        </button>
+                    </div>
+
+                    <!-- AI ML Forecast Visualization & Output (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Projected Honey Production Curve -->
+                        <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                        <i class="fa-solid fa-chart-column text-amber-400"></i>
+                                        <span>Seasonal Honey Yield Prediction vs Historical Baseline</span>
+                                    </h3>
+                                    <p class="text-xs text-slate-400">ML Regression trained on 5-year IoT microclimate + nectar flow dataset</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-slate-400">Predicted Yield:</span>
+                                    <div id="ml-total-predicted" class="text-xl font-extrabold text-amber-400">1,240.5 kg</div>
+                                </div>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="yieldMLChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Gemini AI Insights Response Box -->
+                        <div class="glass-panel p-5 rounded-2xl border border-amber-500/30 bg-slate-900/90 relative">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-robot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-100 text-sm">Gemini AI Apiary Strategic Recommendations</h4>
+                                    <p class="text-[11px] text-slate-400">Intelligent harvest window optimization & floral resource recommendation</p>
+                                </div>
+                            </div>
+
+                            <div id="ai-recommendation-box" class="text-xs text-slate-300 space-y-2 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+                                <p><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i><strong>Optimal Harvest Window:</strong> October 14th - October 18th (Honey moisture levels predicted at optimal 17.1%).</p>
+                                <p><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i><strong>Super Addition Action:</strong> Add +2 honey supers to Hive #02 and Hive #03 within 48 hours to avoid honey-bound brood boxes during peak Acacia nectar surge.</p>
+                                <p><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i><strong>Pollen Density Score:</strong> Excellent forage diversity detected. Lab pollen ratio projected at 82% Acacia nectar, qualified for Single-Origin Premium Grade certification.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: BLOCKCHAIN BATCH PROVENANCE -->
+            <div id="bk-content-blockchain" class="hidden space-y-6">
+                <!-- Mint New Honey Block Form & Ledger List -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Mint Block Form -->
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="border-b border-slate-800 pb-3">
+                            <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                <i class="fa-solid fa-cubes-stacked text-amber-500"></i>
+                                <span>Mint Harvest Block to Chain</span>
+                            </h3>
+                            <p class="text-xs text-slate-400">Log unalterable honey origin metadata onto the BeeChain immutable ledger.</p>
+                        </div>
+
+                        <form id="mint-form" onsubmit="mintNewBlock(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Harvest Batch ID</label>
+                                <input type="text" id="mint-batch-id" required value="HONEY-BLK-9084" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-amber-400 font-mono focus:border-amber-500 focus:outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Honey Floral Type</label>
+                                <select id="mint-honey-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:border-amber-500 focus:outline-none">
+                                    <option value="Raw Acacia Honey">Raw Acacia Honey (Organic)</option>
+                                    <option value="Wildflower Blossom">Wildflower Blossom Honey</option>
+                                    <option value="Lavender Crest Honey">Lavender Crest Honey</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Volume (kg)</label>
+                                    <input type="number" id="mint-volume" value="120" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:border-amber-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Moisture %</label>
+                                    <input type="text" id="mint-moisture" value="17.2%" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:border-amber-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Lab Testing Status</label>
+                                <input type="text" id="mint-lab" value="100% Pure Organic - Zero Antibiotics Passed" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:border-amber-500 focus:outline-none">
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-link"></i>
+                                <span>Execute Cryptographic Mint</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Blockchain Transaction Inspector (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                <i class="fa-solid fa-network-wired text-purple-400"></i>
+                                <span>Live Blockchain Block Explorer</span>
+                            </h3>
+                            <span class="text-xs text-slate-400">Network Consensus: Proof-of-Authority (PoA Apiary Node)</span>
+                        </div>
+
+                        <div id="blockchain-ledger-container" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                            <!-- Blockchain Block Cards dynamically rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CUSTOMER VIEW CONTAINER -->
+        <div id="view-customer" class="hidden space-y-6">
+
+            <!-- Customer Hero Banner -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 relative overflow-hidden">
+                <div class="max-w-2xl space-y-3 relative z-10">
+                    <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">Honey Authenticity & Eco-Tourism</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-100">Trace Your Honey from Hive to Table & Experience Our Apiary</h2>
+                    <p class="text-xs sm:text-sm text-slate-300">Scan your jar's QR code or enter the batch code to view IoT hive sensor telemetry, certified lab analysis, and reserve a live farm visit.</p>
+                </div>
+                <div class="hidden md:block absolute right-6 top-1/2 -translate-y-1/2 text-amber-500/10 text-9xl">
+                    <i class="fa-solid fa-jar"></i>
+                </div>
+            </div>
+
+            <!-- Customer Tabs -->
+            <div class="flex border-b border-slate-800 space-x-6 text-sm font-medium">
+                <button onclick="switchCustTab('verify')" id="custtab-verify" class="pb-3 border-b-2 border-amber-500 text-amber-400 font-semibold flex items-center space-x-2">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>Scan QR / Trace Honey Provenance</span>
+                </button>
+                <button onclick="switchCustTab('visit')" id="custtab-visit" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Farm Geolocation & Book a Visit</span>
+                </button>
+            </div>
+
+            <!-- CUSTOMER TAB 1: SCAN & VERIFY -->
+            <div id="cust-content-verify" class="space-y-6">
+                <!-- QR Code & Search Section -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full md:w-auto">
+                        <!-- Simulated QR Scanner Visual -->
+                        <div class="w-32 h-32 bg-slate-950 rounded-2xl border-2 border-dashed border-amber-500/50 p-2 flex flex-col items-center justify-center text-center relative group cursor-pointer" onclick="simulateQRScan()">
+                            <div id="qr-code-canvas"></div>
+                            <div class="absolute inset-0 bg-slate-950/80 rounded-xl flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all text-xs text-amber-400 font-semibold">
+                                <i class="fa-solid fa-camera text-xl mb-1"></i>
+                                <span>Click to Scan</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1 text-center sm:text-left">
+                            <h3 class="font-bold text-slate-100">Have a Honey Jar Batch Code?</h3>
+                            <p class="text-xs text-slate-400">Enter code printed on jar seal (e.g. HONEY-BLK-9082)</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button onclick="setSampleBatch('HONEY-BLK-9082')" class="text-[11px] px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-lg border border-slate-700">#HONEY-BLK-9082</button>
+                                <button onclick="setSampleBatch('HONEY-BLK-9083')" class="text-[11px] px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-lg border border-slate-700">#HONEY-BLK-9083</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="w-full md:w-80 flex space-x-2">
+                        <input type="text" id="cust-batch-input" value="HONEY-BLK-9082" placeholder="Enter Batch Code..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-100 font-mono focus:border-amber-500 focus:outline-none">
+                        <button onclick="verifyCustomerHoney()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Provenance & Lab Certificate Details Display -->
+                <div id="cust-provenance-result" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Column 1: Verification Badge & Chain Summary -->
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="text-center pb-4 border-b border-slate-800 space-y-2">
+                            <div class="w-16 h-16 rounded-full bg-emerald-500/10 border-2 border-emerald-500 text-emerald-400 mx-auto flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20">
+                                <i class="fa-solid fa-shield-check"></i>
+                            </div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">100% Cryptographically Verified</span>
+                            <h3 id="cust-res-title" class="text-xl font-bold text-slate-100">Raw Acacia Organic Honey</h3>
+                            <p id="cust-res-batch" class="text-xs text-amber-400 font-mono">Batch: HONEY-BLK-9082</p>
+                        </div>
+
+                        <!-- Origin Data List -->
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Harvest Date:</span>
+                                <span id="cust-res-date" class="text-slate-200 font-semibold">Sept 08, 2026</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Origin Apiary:</span>
+                                <span id="cust-res-hive" class="text-slate-200 font-semibold">Hive #03 - Acacia Valley</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Geographic Coordinates:</span>
+                                <span class="text-slate-200 font-mono">45.4215° N, 12.1482° E</span>
+                            </div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/60">
+                                <span class="text-slate-400">Blockchain Hash:</span>
+                                <span id="cust-res-hash" class="text-purple-400 font-mono text-[10px] truncate max-w-[150px]">0x7f83b...a91c</span>
+                            </div>
+                        </div>
+
+                        <!-- Producer Card -->
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex items-center space-x-3">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80" alt="Beekeeper" class="w-10 h-10 rounded-full object-cover">
+                            <div class="text-xs">
+                                <div class="text-slate-200 font-bold">Master Beekeeper Marcus Vance</div>
+                                <div class="text-slate-400">Certified Organic Apiary Lead</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 & 3: Verified Lab Report Breakdown -->
+                    <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800 space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                    <i class="fa-solid fa-flask-vial text-amber-400"></i>
+                                    <span>Certified Quality Lab Report (Iso-Standard)</span>
+                                </h3>
+                                <p class="text-xs text-slate-400">Verified by Independent Agri-Food Analysis Laboratory</p>
+                            </div>
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/30">Grade A+ Premium</span>
+                        </div>
+
+                        <!-- Lab Parameters Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-center">
+                                <div class="text-[11px] text-slate-400">Moisture Content</div>
+                                <div id="lab-val-moisture" class="text-lg font-bold text-slate-100 mt-1">17.2%</div>
+                                <div class="text-[10px] text-emerald-400">Ideal (< 20%)</div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-center">
+                                <div class="text-[11px] text-slate-400">Pollen Purity Ratio</div>
+                                <div id="lab-val-pollen" class="text-lg font-bold text-amber-400 mt-1">84% Acacia</div>
+                                <div class="text-[10px] text-emerald-400">Monofloral</div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-center">
+                                <div class="text-[11px] text-slate-400">HMF Level</div>
+                                <div class="text-lg font-bold text-slate-100 mt-1">4.2 mg/kg</div>
+                                <div class="text-[10px] text-emerald-400">Unheated Raw</div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-center">
+                                <div class="text-[11px] text-slate-400">Diastase Activity</div>
+                                <div class="text-lg font-bold text-slate-100 mt-1">28.4 DN</div>
+                                <div class="text-[10px] text-emerald-400">High Enzyme</div>
+                            </div>
+                        </div>
+
+                        <!-- Pollen Composition Spectrum Chart -->
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-300 mb-2">Melissopalynology (Pollen Analysis Breakdown)</h4>
+                            <div class="h-44">
+                                <canvas id="pollenChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMER TAB 2: FARM LOCATION & VISIT PLANNER -->
+            <div id="cust-content-visit" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Farm Location & Interactive Map Simulator (2 Cols) -->
+                    <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                    <i class="fa-solid fa-map text-amber-400"></i>
+                                    <span>BeeChain Apiary Geolocation & Forage Zone Map</span>
+                                </h3>
+                                <p class="text-xs text-slate-400">Sunny Slope Apiary Fields • Acacia & Wildflower Sanctuary</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <span class="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-lg border border-amber-500/30"><i class="fa-solid fa-sun mr-1"></i> 26°C Sunny</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Map Canvas Visual -->
+                        <div class="relative rounded-2xl overflow-hidden border border-slate-800 h-80 bg-slate-950 flex flex-col justify-between p-4" id="map-simulator-box">
+                            <!-- Background Map Graphic Simulation -->
+                            <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="1"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#grid)" />
+                                <!-- Foraging Radius Circles -->
+                                <circle cx="35%" cy="45%" r="120" fill="rgba(245, 158, 11, 0.08)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4"/>
+                                <circle cx="70%" cy="60%" r="90" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1" stroke-dasharray="4"/>
+                            </svg>
+
+                            <!-- Map Pins -->
+                            <div class="relative z-10 flex justify-between">
+                                <div class="bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-800 text-xs space-y-1">
+                                    <div class="font-bold text-amber-400">Apiary Coordinates</div>
+                                    <div class="text-slate-300">Lat: 45.4215 N | Long: 12.1482 E</div>
+                                    <div class="text-emerald-400 text-[10px]">Active Forage Radius: 3.5 km</div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Apiary Hotspots -->
+                            <div class="relative z-10 grid grid-cols-3 gap-2 text-center">
+                                <div onclick="selectMapZone('Acacia Valley Hive #03')" class="bg-slate-900/90 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 p-2 rounded-xl cursor-pointer transition">
+                                    <i class="fa-solid fa-location-dot text-amber-400 text-lg mb-1"></i>
+                                    <div class="text-[11px] font-bold text-slate-100">Acacia Zone</div>
+                                    <div class="text-[9px] text-slate-400">Hive #01 - #06</div>
+                                </div>
+                                <div onclick="selectMapZone('Lavender Meadow')" class="bg-slate-900/90 hover:bg-purple-500/20 border border-slate-700 hover:border-purple-500/50 p-2 rounded-xl cursor-pointer transition">
+                                    <i class="fa-solid fa-location-dot text-purple-400 text-lg mb-1"></i>
+                                    <div class="text-[11px] font-bold text-slate-100">Lavender Field</div>
+                                    <div class="text-[9px] text-slate-400">Hive #07 - #14</div>
+                                </div>
+                                <div onclick="selectMapZone('Visitor Learning Center')" class="bg-slate-900/90 hover:bg-emerald-500/20 border border-slate-700 hover:border-emerald-500/50 p-2 rounded-xl cursor-pointer transition">
+                                    <i class="fa-solid fa-building-user text-emerald-400 text-lg mb-1"></i>
+                                    <div class="text-[11px] font-bold text-slate-100">Visitor Pavilion</div>
+                                    <div class="text-[9px] text-slate-400">Tour & Tasting Hub</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visit Booking Form -->
+                    <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="border-b border-slate-800 pb-3">
+                            <h3 class="font-bold text-slate-100 flex items-center space-x-2">
+                                <i class="fa-solid fa-calendar-check text-amber-500"></i>
+                                <span>Schedule an Eco-Apiary Tour</span>
+                            </h3>
+                            <p class="text-xs text-slate-400">Guided suit-up hive inspections & fresh raw honey tasting.</p>
+                        </div>
+
+                        <form id="visit-form" onsubmit="bookFarmVisit(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Full Name</label>
+                                <input type="text" id="visit-name" required placeholder="Jane Doe" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Select Tour Experience</label>
+                                <select id="visit-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
+                                    <option value="Beekeeper Masterclass & Hive Suit-up">Beekeeper Masterclass & Hive Suit-up</option>
+                                    <option value="Organic Honey Tasting & Floral Walk">Organic Honey Tasting & Floral Walk</option>
+                                    <option value="Family Apiary Discovery Day">Family Apiary Discovery Day</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Date</label>
+                                    <input type="date" id="visit-date" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Guests</label>
+                                    <input type="number" id="visit-guests" min="1" max="10" value="2" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-ticket"></i>
+                                <span>Confirm Visit Reservation</span>
+                            </button>
+                        </form>
+
+                        <!-- Generated Visit Pass Modal / Box -->
+                        <div id="visit-pass-box" class="hidden bg-slate-950 p-4 rounded-xl border border-amber-500/40 text-xs space-y-2">
+                            <div class="flex items-center justify-between font-bold text-amber-400">
+                                <span><i class="fa-solid fa-circle-check mr-1"></i> Visit Confirmed!</span>
+                                <span id="pass-id" class="font-mono text-[10px] text-slate-400">PASS-#4892</span>
+                            </div>
+                            <div class="text-slate-200" id="pass-details">Guest: Jane Doe • 2 Visitors</div>
+                            <div class="text-[10px] text-slate-400">Show this digital pass upon arrival at the Visitor Center.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // GLOBAL APP STATE & BLOCKCHAIN LEDGER DATA
+        let currentRole = 'beekeeper'; // 'beekeeper' | 'customer'
+        let telemetryInterval = null;
+        let isTelemetryStreaming = true;
+        let currentTheme = 'dark';
+
+        // Mock Initial Blockchain
+        const mockBlockchain = [
+            {
+                blockIndex: 142,
+                batchId: "HONEY-BLK-9082",
+                timestamp: "2026-09-08 14:22:05",
+                honeyType: "Raw Acacia Honey",
+                volume: "150 kg",
+                moisture: "17.2%",
+                hiveId: "Hive #03 - Acacia Grove",
+                prevHash: "0x4e8a...19b2",
+                hash: "0x7f83b1c90e21a85e4f9b889a71024bc68e110293a832194b611e8f902a91c"
+            },
+            {
+                blockIndex: 141,
+                batchId: "HONEY-BLK-9083",
+                timestamp: "2026-09-02 09:15:40",
+                honeyType: "Wildflower Blossom",
+                volume: "210 kg",
+                moisture: "18.1%",
+                hiveId: "Hive #01 - Solar Apiary",
+                prevHash: "0x1d2e...99c4",
+                hash: "0x3a99e120b411c8d23e5f102941a2bc3e019f82d1c9817e900a41bc901e8f"
+            }
+        ];
+
+        // Chart Instances
+        let mainTelemetryChart, miniChartTemp, miniChartHum, miniChartWeight, miniChartFreq, yieldMLChart, pollenChart;
+
+        // Initialize App on DOM Load
+        window.onload = function() {
+            initTheme();
+            initMiniCharts();
+            initMainTelemetryChart();
+            initYieldMLChart();
+            initPollenChart();
+            renderBlockchainLedger();
+            generateQRCode("HONEY-BLK-9082");
+
+            // Set default date for tour planner
+            const dateInput = document.getElementById('visit-date');
+            if (dateInput) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 2);
+                dateInput.value = tomorrow.toISOString().split('T')[0];
+            }
+
+            // Start Live IoT Polling Simulation
+            startIoTStream();
+        };
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('beechain-theme') || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        function toggleTheme() {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            localStorage.setItem('beechain-theme', newTheme);
+        }
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-toggle-icon');
+            const btn = document.getElementById('theme-toggle-btn');
+
+            if (theme === 'light') {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                if (icon) icon.className = 'fa-solid fa-moon text-base text-amber-600';
+                if (btn) btn.title = "Switch to Dark Mode";
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                if (icon) icon.className = 'fa-solid fa-sun text-base text-amber-400';
+                if (btn) btn.title = "Switch to Light Mode";
+            }
+            
+            updateChartThemes(theme);
+            
+            // Re-render QR Code with theme matching colors
+            const batchInput = document.getElementById('cust-batch-input');
+            if (batchInput) {
+                generateQRCode(batchInput.value || "HONEY-BLK-9082");
+            }
+        }
+
+        function updateChartThemes(theme) {
+            const textColor = theme === 'light' ? '#334155' : '#94a3b8';
+            const gridColor = theme === 'light' ? '#e2e8f0' : '#1e293b';
+
+            if (mainTelemetryChart) {
+                mainTelemetryChart.options.scales.x.ticks.color = textColor;
+                mainTelemetryChart.options.scales.x.grid.color = gridColor;
+                mainTelemetryChart.options.scales.yWeight.grid.color = gridColor;
+                mainTelemetryChart.options.plugins.legend.labels.color = textColor;
+                mainTelemetryChart.update();
+            }
+
+            if (yieldMLChart) {
+                yieldMLChart.options.scales.x.ticks.color = textColor;
+                yieldMLChart.options.scales.y.ticks.color = textColor;
+                yieldMLChart.options.scales.y.grid.color = gridColor;
+                yieldMLChart.options.plugins.legend.labels.color = textColor;
+                yieldMLChart.update();
+            }
+
+            if (pollenChart) {
+                pollenChart.options.plugins.legend.labels.color = theme === 'light' ? '#1e293b' : '#cbd5e1';
+                pollenChart.update();
+            }
+        }
+
+        function switchRole(role) {
+            currentRole = role;
+            const bkView = document.getElementById('view-beekeeper');
+            const custView = document.getElementById('view-customer');
+            const bkBtn = document.getElementById('role-beekeeper-btn');
+            const custBtn = document.getElementById('role-customer-btn');
+
+            if (role === 'beekeeper') {
+                bkView.classList.remove('hidden');
+                custView.classList.add('hidden');
+
+                bkBtn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 bg-amber-500 text-slate-950 shadow-md";
+                custBtn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-white";
+            } else {
+                bkView.classList.add('hidden');
+                custView.classList.remove('hidden');
+
+                custBtn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 bg-amber-500 text-slate-950 shadow-md";
+                bkBtn.className = "px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-white";
+            }
+        }
+
+        function switchBkTab(tab) {
+            const tabs = ['telemetry', 'yield', 'blockchain'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`bktab-${t}`);
+                const content = document.getElementById(`bk-content-${t}`);
+                if (t === tab) {
+                    btn.className = "pb-3 border-b-2 border-amber-500 text-amber-400 font-semibold flex items-center space-x-2";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        function switchCustTab(tab) {
+            const tabs = ['verify', 'visit'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`custtab-${t}`);
+                const content = document.getElementById(`cust-content-${t}`);
+                if (t === tab) {
+                    btn.className = "pb-3 border-b-2 border-amber-500 text-amber-400 font-semibold flex items-center space-x-2";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-2";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        function initMiniCharts() {
+            const sparklineOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                elements: { point: { radius: 0 }, line: { borderWidth: 2, tension: 0.4 } }
+            };
+
+            // Temp
+            miniChartTemp = new Chart(document.getElementById('miniChartTemp'), {
+                type: 'line',
+                data: { labels: [1,2,3,4,5], datasets: [{ data: [34.2, 34.5, 34.8, 34.6, 34.8], borderColor: '#f59e0b' }] },
+                options: sparklineOptions
+            });
+
+            // Hum
+            miniChartHum = new Chart(document.getElementById('miniChartHum'), {
+                type: 'line',
+                data: { labels: [1,2,3,4,5], datasets: [{ data: [60, 59, 58.5, 58.2, 58.2], borderColor: '#3b82f6' }] },
+                options: sparklineOptions
+            });
+
+            // Weight
+            miniChartWeight = new Chart(document.getElementById('miniChartWeight'), {
+                type: 'line',
+                data: { labels: [1,2,3,4,5], datasets: [{ data: [21.8, 22.0, 22.1, 22.3, 22.4], borderColor: '#10b981' }] },
+                options: sparklineOptions
+            });
+
+            // Freq
+            miniChartFreq = new Chart(document.getElementById('miniChartFreq'), {
+                type: 'line',
+                data: { labels: [1,2,3,4,5], datasets: [{ data: [225, 228, 230, 229, 230], borderColor: '#a855f7' }] },
+                options: sparklineOptions
+            });
+        }
+
+        function initMainTelemetryChart() {
+            const ctx = document.getElementById('mainTelemetryChart').getContext('2d');
+            mainTelemetryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
+                    datasets: [
+                        {
+                            label: 'Hive Weight (kg)',
+                            data: [21.5, 21.4, 21.8, 22.1, 22.3, 22.4, 22.4],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            yAxisID: 'yWeight',
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Buzz Freq (Hz)',
+                            data: [210, 205, 235, 240, 235, 230, 230],
+                            borderColor: '#a855f7',
+                            borderDash: [5, 5],
+                            yAxisID: 'yFreq',
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                        yWeight: {
+                            type: 'linear',
+                            position: 'left',
+                            ticks: { color: '#10b981' },
+                            grid: { color: '#1e293b' },
+                            title: { display: true, text: 'Weight (kg)', color: '#10b981' }
+                        },
+                        yFreq: {
+                            type: 'linear',
+                            position: 'right',
+                            ticks: { color: '#a855f7' },
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'Audio Pitch (Hz)', color: '#a855f7' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initYieldMLChart() {
+            const ctx = document.getElementById('yieldMLChart').getContext('2d');
+            yieldMLChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep (Proj)', 'Oct (Proj)'],
+                    datasets: [
+                        {
+                            label: '2025 Baseline Yield (kg)',
+                            data: [120, 180, 210, 190, 160, 110],
+                            backgroundColor: 'rgba(51, 65, 85, 0.6)',
+                            borderRadius: 6
+                        },
+                        {
+                            label: '2026 AI Predicted Harvest (kg)',
+                            data: [140, 210, 250, 230, 240.5, 170],
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#64748b' }, grid: { display: false } },
+                        y: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
+        function initPollenChart() {
+            const ctx = document.getElementById('pollenChart').getContext('2d');
+            pollenChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Acacia Nectar (84%)', 'Wild Clover (10%)', 'Linden Blossom (4%)', 'Other Micro-Flora (2%)'],
+                    datasets: [{
+                        data: [84, 10, 4, 2],
+                        backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function startIoTStream() {
+            if (telemetryInterval) clearInterval(telemetryInterval);
+            telemetryInterval = setInterval(() => {
+                if (!isTelemetryStreaming) return;
+
+                // Small realistic fluctuations
+                const currentWeight = parseFloat((22.4 + (Math.random() * 0.1 - 0.04)).toFixed(2));
+                const currentTemp = parseFloat((34.8 + (Math.random() * 0.4 - 0.2)).toFixed(1));
+                const currentHum = parseFloat((58.2 + (Math.random() * 0.6 - 0.3)).toFixed(1));
+
+                document.getElementById('val-weight').innerText = `${currentWeight} kg`;
+                document.getElementById('val-temp').innerText = `${currentTemp} °C`;
+                document.getElementById('val-humidity').innerText = `${currentHum} %`;
+
+                // Update Mini Sparklines
+                updateSparkline(miniChartWeight, currentWeight);
+                updateSparkline(miniChartTemp, currentTemp);
+                updateSparkline(miniChartHum, currentHum);
+            }, 3000);
+        }
+
+        function updateSparkline(chart, val) {
+            chart.data.datasets[0].data.shift();
+            chart.data.datasets[0].data.push(val);
+            chart.update('none');
+        }
+
+        function toggleTelemetryStream() {
+            isTelemetryStreaming = !isTelemetryStreaming;
+            const btnText = document.getElementById('stream-btn-text');
+            if (isTelemetryStreaming) {
+                btnText.innerText = 'Live IoT Polling Active';
+            } else {
+                btnText.innerText = 'Polling Paused';
+            }
+        }
+
+        function updateHiveTelemetry() {
+            const hive = document.getElementById('hive-selector').value;
+            let temp = '34.8 °C', weight = '22.4 kg', freq = '230 Hz';
+
+            if (hive === 'hive-01') { temp = '35.1 °C'; weight = '19.8 kg'; freq = '225 Hz'; }
+            else if (hive === 'hive-02') { temp = '34.2 °C'; weight = '24.1 kg'; freq = '238 Hz'; }
+            else if (hive === 'hive-04') { temp = '33.9 °C'; weight = '18.2 kg'; freq = '220 Hz'; }
+
+            document.getElementById('val-temp').innerText = temp;
+            document.getElementById('val-weight').innerText = weight;
+            document.getElementById('val-freq').innerText = freq;
+        }
+
+        function triggerSimulatedAlert() {
+            // Simulate acoustic frequency jump >280Hz indicating swarm threat
+            document.getElementById('val-freq').innerText = '315 Hz';
+            const badge = document.getElementById('swarm-status-badge');
+            badge.innerText = 'CRITICAL: Swarm Pitch Spike!';
+            badge.className = 'text-xs text-rose-400 font-bold animate-pulse';
+
+            const alertBox = document.getElementById('swarm-alert-box');
+            alertBox.className = 'glass-panel p-4 rounded-2xl border border-rose-500/50 bg-rose-500/10 flex items-start space-x-4 animate-bounce';
+            
+            document.getElementById('swarm-alert-text').innerHTML = `
+                <strong class="text-rose-300">SWARM WARNING DETECTED:</strong> Sound spectrum analysis detected queen piping frequency at 315Hz with a rapid hive weight decrease trend (-1.2kg/hr). Inspect Hive #03 queen cells immediately!
+            `;
+        }
+
+        function updateYieldMLModel() {
+            const bloom = parseInt(document.getElementById('ml-input-bloom').value);
+            const rain = parseInt(document.getElementById('ml-input-rain').value);
+            const temp = parseInt(document.getElementById('ml-input-temp').value);
+            const colony = parseInt(document.getElementById('ml-input-colony').value);
+
+            document.getElementById('ml-val-bloom').innerText = `${bloom} %`;
+            document.getElementById('ml-val-rain').innerText = `${rain} Days`;
+            document.getElementById('ml-val-temp').innerText = `${temp} °C`;
+            document.getElementById('ml-val-colony').innerText = `${colony} / 100`;
+
+            // Simple ML Regression Formula simulation
+            const baseYield = (bloom * 8) + (colony * 5.5) - (rain * 18) + (temp > 20 && temp < 32 ? 120 : -50);
+            const calculatedTotal = Math.max(300, Math.round(baseYield));
+
+            document.getElementById('ml-total-predicted').innerText = `${calculatedTotal.toLocaleString()} kg`;
+            document.getElementById('stat-ai-yield').innerText = `${calculatedTotal.toLocaleString()} kg`;
+
+            // Update Chart Target bar
+            yieldMLChart.data.datasets[1].data[4] = Math.round(calculatedTotal * 0.22);
+            yieldMLChart.data.datasets[1].data[5] = Math.round(calculatedTotal * 0.15);
+            yieldMLChart.update();
+        }
+
+        async function askGeminiBeekeeperAI() {
+            const recBox = document.getElementById('ai-recommendation-box');
+            recBox.innerHTML = `<div class="flex items-center space-x-2 text-amber-400"><i class="fa-solid fa-spinner animate-spin"></i><span>Querying Gemini Apiary Strategist AI...</span></div>`;
+
+            // Fallback / Simulated Gemini AI Prompt execution
+            setTimeout(() => {
+                const bloom = document.getElementById('ml-input-bloom').value;
+                const rain = document.getElementById('ml-input-rain').value;
+
+                recBox.innerHTML = `
+                    <p><i class="fa-solid fa-brain text-amber-400 mr-2"></i><strong>Gemini Strategic Analysis Result:</strong></p>
+                    <p>• Given the high <strong>${bloom}% Floral Bloom</strong> index and low rainfall (${rain} days), nectar flow will reach peak saturation in 9 days.</p>
+                    <p>• <strong>Recommended Action:</strong> Harvest super boxes early on Oct 12th to capture pure Acacia single-origin profile before late-autumn wildflower blending occurs.</p>
+                    <p>• <strong>Purity Forecast:</strong> Projected 86% monofloral acacia purity hash ready for Blockchain Certification.</p>
+                `;
+            }, 1200);
+        }
+
+        function renderBlockchainLedger() {
+            const container = document.getElementById('blockchain-ledger-container');
+            container.innerHTML = '';
+
+            mockBlockchain.forEach(block => {
+                const blockEl = document.createElement('div');
+                blockEl.className = "glass-panel p-4 rounded-xl border border-slate-800 space-y-2 hover:border-amber-500/40 transition";
+                blockEl.innerHTML = `
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-amber-400 font-mono">Block #${block.blockIndex} • ${block.batchId}</span>
+                        <span class="text-slate-500">${block.timestamp}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div><span class="text-slate-400">Honey Type:</span> <span class="text-slate-200 font-medium">${block.honeyType}</span></div>
+                        <div><span class="text-slate-400">Yield Vol:</span> <span class="text-slate-200 font-medium">${block.volume}</span></div>
+                    </div>
+                    <div class="text-[10px] font-mono text-purple-400 bg-slate-950/80 p-2 rounded-lg border border-slate-900 truncate">
+                        Hash: ${block.hash}
+                    </div>
+                `;
+                container.appendChild(blockEl);
+            });
+
+            document.getElementById('stat-blocks-minted').innerText = `${mockBlockchain.length + 140} Blocks`;
+        }
+
+        function mintNewBlock(event) {
+            event.preventDefault();
+
+            const batchId = document.getElementById('mint-batch-id').value;
+            const honeyType = document.getElementById('mint-honey-type').value;
+            const volume = `${document.getElementById('mint-volume').value} kg`;
+            const moisture = document.getElementById('mint-moisture').value;
+
+            // Simple SHA-256 hash generator simulation
+            const newIndex = mockBlockchain[0].blockIndex + 1;
+            const simulatedHash = '0x' + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+            const newBlock = {
+                blockIndex: newIndex,
+                batchId: batchId,
+                timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                honeyType: honeyType,
+                volume: volume,
+                moisture: moisture,
+                hiveId: "Hive #03 - Acacia Grove",
+                prevHash: mockBlockchain[0].hash.substring(0, 10) + '...',
+                hash: simulatedHash
+            };
+
+            mockBlockchain.unshift(newBlock);
+            renderBlockchainLedger();
+            alertToast(`Successfully Minted Block #${newIndex} to BeeChain Ledger!`);
+        }
+
+        function generateQRCode(text) {
+            const qrContainer = document.getElementById("qr-code-canvas");
+            if (!qrContainer) return;
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+                text: text,
+                width: 110,
+                height: 110,
+                colorDark : currentTheme === 'light' ? '#0f172a' : '#f59e0b',
+                colorLight : currentTheme === 'light' ? '#ffffff' : '#0f172a',
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        function simulateQRScan() {
+            setSampleBatch('HONEY-BLK-9082');
+            alertToast("QR Code Scanned Successfully! Verified Batch #HONEY-BLK-9082");
+        }
+
+        function setSampleBatch(code) {
+            document.getElementById('cust-batch-input').value = code;
+            verifyCustomerHoney();
+        }
+
+        function verifyCustomerHoney() {
+            const code = document.getElementById('cust-batch-input').value.trim();
+            generateQRCode(code);
+
+            const title = document.getElementById('cust-res-title');
+            const batch = document.getElementById('cust-res-batch');
+            const moisture = document.getElementById('lab-val-moisture');
+
+            if (code === 'HONEY-BLK-9083') {
+                title.innerText = "Wildflower Blossom Honey";
+                batch.innerText = "Batch: HONEY-BLK-9083";
+                moisture.innerText = "18.1%";
+            } else {
+                title.innerText = "Raw Acacia Organic Honey";
+                batch.innerText = `Batch: ${code}`;
+                moisture.innerText = "17.2%";
+            }
+        }
+
+        function selectMapZone(zoneName) {
+            alertToast(`Selected Map Point: ${zoneName}. Apiary sensor status normal.`);
+        }
+
+        function bookFarmVisit(e) {
+            e.preventDefault();
+            const name = document.getElementById('visit-name').value;
+            const type = document.getElementById('visit-type').value;
+            const guests = document.getElementById('visit-guests').value;
+            const date = document.getElementById('visit-date').value;
+
+            const passBox = document.getElementById('visit-pass-box');
+            passBox.classList.remove('hidden');
+
+            document.getElementById('pass-id').innerText = `PASS-#${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById('pass-details').innerText = `${name} • ${guests} Visitor(s) • ${type} on ${date}`;
+
+            alertToast("Farm Visit Reservation Confirmed!");
+        }
+
+        // Custom Notification Banner (No alert())
+        function alertToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 bg-amber-500 text-slate-950 font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2 text-xs transition-all transform translate-y-0';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
